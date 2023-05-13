@@ -71,7 +71,7 @@ escservo.writeMicroseconds(channel3); // Send signal to ESC.
 if (channel2 > 1690 || channel2 < 1310) { // check if total is greater than 1600 or less than 1400
   // execute pitch code only
   servoEins.writeMicroseconds(channel2);
-  servoZwei.writeMicroseconds(2000 - channel2 + 500);
+  servoZwei.writeMicroseconds(2000 - channel2 + 1050);
 } else {
   // execute roll code
   servoEins.writeMicroseconds(channel1);
