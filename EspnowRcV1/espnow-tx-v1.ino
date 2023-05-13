@@ -17,6 +17,9 @@ volatile unsigned long ppmLastTime = 0;
 uint16_t ppmChannel1, ppmChannel2, ppmChannel3, ppmChannel4, ppmChannel5, ppmChannel6, ppmChannel7, ppmChannel8;
 
 // ESP-NOW peer address
+// ADD YOUR OWN !!!
+// ADD YOUR OWN !!!
+//
 uint8_t broadcastAddress[] = {0x10, 0x52, 0x1C, 0x62, 0x9C, 0x4C};
 
 // WiFi channel
