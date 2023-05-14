@@ -23,7 +23,7 @@ Servo switch2;
 int ppmChannel1, ppmChannel2, ppmChannel3, ppmChannel4, ppmChannel5, ppmChannel6;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   SPI.begin(5, 19, 27, 18);
   LoRa.setPins(ss, rst, dio0);
   LoRa.begin(433E6);
