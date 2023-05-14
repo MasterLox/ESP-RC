@@ -28,7 +28,7 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(ppmPin), ppmInterrupt, CHANGE);
 
   // Initialize serial communication
-  Serial.begin(115200);
+  Serial.begin(9600);
   LoRa.begin(433E6);
 }
 
@@ -40,7 +40,7 @@ void loop() {
 
 void sendData() {
   LoRa.beginPacket();
-  LoRa.print('S' + String(ppmChannel1) + ',' + String(ppmChannel2) + ',' + String(ppmChannel3) + ',' + String(ppmChannel4) + ',' + String(ppmChannel5) + ',' + String(ppmChannel6) + "," + String(ppmChannel7) + ',' + String(ppmChannel8) + 'E');
+ LoRa.print('S' + String(ppmChannel1) + ',' + String(ppmChannel2) + ',' + String(ppmChannel3) + ',' + String(ppmChannel4) + ',' + String(ppmChannel5) + ',' + String(ppmChannel6) + 'E');
   LoRa.endPacket();
 }
 
