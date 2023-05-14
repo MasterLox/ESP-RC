@@ -28,7 +28,7 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(ppmPin), ppmInterrupt, CHANGE);
 
   // Initialize serial communication
-  Serial.begin(9600);
+  Serial.begin(115200);
   LoRa.begin(433E6);
 }
 
