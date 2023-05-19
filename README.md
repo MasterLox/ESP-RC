@@ -11,7 +11,7 @@ You have to have python installed
 
 Execute Guimain.exe or the Guimain.py and set the pins for your module
 
-![The Flasher](https://raw.githubusercontent.com/MasterLox/ESP-RC/main/image/flasher.png?token=GHSAT0AAAAAACAHZ2D55ZNHJKF7SLB7LQVMZDHXRYQ)
+![The Flasher](https://github.com/MasterLox/ESP-RC/blob/main/image/flasher.png?raw=true)
 
 
 Save the Pins and procede to Build and Flash
