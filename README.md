@@ -7,7 +7,7 @@ ESP-RC is a project that utilizes ESP32 microcontrollers with both ESPNow and Lo
 Either use the TX and RX Flasher or flash it via Arduino IDE
 
 ### 1.1 Using the Flasher 
-You have to have python installed 
+You have to have python3 installed 
 
 Execute Guimain.exe or the Guimain.py and set the pins for your module
 
