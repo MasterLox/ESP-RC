@@ -1,7 +1,5 @@
 import subprocess
 import os
-
-import os
 import shutil
 
 # Get the current user's home directory
@@ -40,16 +38,21 @@ def install_platformio():
     subprocess.call(cmd, shell=True)
 
 def build_project():
-    project_dir = 'esprc'
-    build_process = subprocess.Popen(['platformio', 'run'], cwd=project_dir)
+    project_dir = '\esprc'
+    cwd = os.getcwd()
+    os.chdir(cwd + project_dir)
+    build_process = subprocess.Popen(['python', '-m', 'platformio', 'run'])
+
     build_process.wait()
 
 def flash_project():
-    project_dir = 'esprc'
-    flash_process = subprocess.Popen(['platformio', 'run', '--target', 'upload'], cwd=project_dir)
+    project_dir = '\esprc'
+    cwd = os.getcwd()
+    os.chdir(cwd + project_dir)
+    flash_process = subprocess.Popen(['python', '-m', 'platformio', 'run', '--target', 'upload'])
     flash_process.wait()
 
 if __name__ == '__main__':
     install_platformio()
-    build_project()
+    #build_project()
     flash_project()

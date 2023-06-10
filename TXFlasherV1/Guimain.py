@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import os
+import re
 
 # Default values for pins
 default_ppm_pin = 2
@@ -12,8 +13,7 @@ default_dio0 = 26
 default_clock = 22
 default_data = 21
 default_reset = "U8X8_PIN_NONE"
-
-
+default_mac_address = "00:1b:63:84:45:e6"
 
 # Function to handle the Save button click
 def save_pins():
@@ -26,6 +26,7 @@ def save_pins():
     clock_pin = clock_pin_entry.get()
     data_pin = data_pin_entry.get()
     reset_pin = reset_pin_entry.get()
+    mac_address = mac_address_entry.get()
 
     # Set pins to default values if no input is provided
     ppmPin = int(ppm_pin) if ppm_pin else default_ppm_pin
@@ -38,8 +39,11 @@ def save_pins():
     data = int(data_pin) if data_pin else default_data
     reset = reset_pin if reset_pin else default_reset
 
+    # Convert MAC address to a format compatible with the Arduino code
+    mac_address = mac_address.replace(":", ", 0x")
+
     input_file_path = "dual-esp-rc.ino"  # Update with the correct input file path and escape the backslashes
-    output_file_path = "esprc\src\dual-esp-rc.ino"  # Update with the desired output file path and escape the backslashes
+    output_file_path = "esprc/src/dual-esp-rc.ino"  # Update with the desired output file path and escape the backslashes
 
     with open(input_file_path, "r") as input_file:
         code = input_file.read()
@@ -54,6 +58,12 @@ def save_pins():
     modified_code = modified_code.replace("/* data=*/ 21", f"/* data=*/ {data}")
     modified_code = modified_code.replace("/* reset=*/ U8X8_PIN_NONE", f"/* reset=*/ {reset}")
 
+    # Find the line that defines the ESP-Rx-MacAddress
+    mac_address_line = re.search(r"uint8_t broadcastAddress\[\] = \{.*?\};", modified_code, re.DOTALL)
+
+    # Replace the MAC address in the line with the new MAC address
+    modified_code = modified_code.replace(mac_address_line.group(), f"uint8_t broadcastAddress[] = {{0x{mac_address}}};")
+
     with open(output_file_path, "w") as output_file:
         output_file.write(modified_code)
 
@@ -61,14 +71,14 @@ def save_pins():
 
 # Function to handle the Build and Flash button click
 def build_and_flash():
-    os.system("compile.py")  # Replace "path_to_build_and_flash_script.py" with the actual path to your Python script
+    os.system("compile.exe")  # Replace "path_to_build_and_flash_script.py" with the actual path to your Python script
 
 # Create the main window
 window = tk.Tk()
 window.title("ESP-RC TX Flasher")
 
 # Set the window size and make it resizable
-window.geometry("400x350")
+window.geometry("400x400")
 window.resizable(False, False)
 
 # Configure colors for dark mode
@@ -76,7 +86,7 @@ window.configure(bg="#252526")
 style = ttk.Style()
 style.theme_create("DarkTheme", settings={
     "TLabel": {"configure": {"background": "#252526", "foreground": "white"}},
-    "TEntry": {"configure": {"fieldbackground": "black", "foreground": "white"}},
+    "TEntry": {"configure": {"fieldbackground": "#070f22", "foreground": "white"}},
     "TButton": {"configure": {"background": "#0078d7", "foreground": "white"}},
 })
 style.theme_use("DarkTheme")
@@ -118,6 +128,10 @@ reset_pin_label = ttk.Label(window, text="Display reset Pin:")
 reset_pin_entry = ttk.Entry(window)
 reset_pin_entry.insert(0, default_reset)
 
+mac_address_label = ttk.Label(window, text="MAC Address:")
+mac_address_entry = ttk.Entry(window)
+mac_address_entry.insert(0, default_mac_address)
+
 note_info = ttk.Label(window, text="This may take a while:")
 # Create the Save button
 save_button = ttk.Button(window, text="Save Pins", command=save_pins)
@@ -153,10 +167,13 @@ data_pin_entry.grid(row=7, column=1, padx=10, pady=5, sticky=tk.W + tk.E)
 reset_pin_label.grid(row=8, column=0, padx=10, pady=5, sticky=tk.W + tk.E)
 reset_pin_entry.grid(row=8, column=1, padx=10, pady=5, sticky=tk.W + tk.E)
 
-# Grid layout for buttons
-save_button.grid(row=9, column=0, columnspan=2, padx=10, pady=10, sticky=tk.W + tk.E)
-build_flash_button.grid(row=10, column=0, columnspan=2, padx=10, pady=10, sticky=tk.W + tk.E)
-note_info.grid(row=11, column=0, padx=10, pady=5, sticky=tk.W + tk.E)
+mac_address_label.grid(row=9, column=0, padx=10, pady=5, sticky=tk.W + tk.E)
+mac_address_entry.grid(row=9, column=1, padx=10, pady=5, sticky=tk.W + tk.E)
 
-# Run the main window's event loop
+note_info.grid(row=10, column=0, columnspan=2, padx=10, pady=5, sticky=tk.W + tk.E)
+
+save_button.grid(row=11, column=0, columnspan=2, padx=10, pady=5, sticky=tk.W + tk.E)
+build_flash_button.grid(row=12, column=0, columnspan=2, padx=10, pady=5, sticky=tk.W + tk.E)
+
+# Start the GUI event loop
 window.mainloop()
